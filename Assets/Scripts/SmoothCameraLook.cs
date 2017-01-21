@@ -34,7 +34,11 @@ public class SmoothCameraLook : MonoBehaviour
 		// Set target direction for the character body to its inital state.
 		if (characterBody) targetCharacterDirection = characterBody.transform.localRotation.eulerAngles;
 
-		playerNumber = transform.parent.GetComponent<PlayerControl> ().index;
+		// If there's no joysticks, set player number to 0 for mouse/keyboard controls.
+		if (GameStateManager.joysticksCount != 0)
+			playerNumber = transform.parent.GetComponent<PlayerControl> ().index;
+		else
+			playerNumber = GameStateManager.joysticksCount;
 
 		lookHorizontalAxis = "lookHorizontalAxisP" + playerNumber;
 		lookVerticalAxis = "lookVerticalAxisP" + playerNumber;
@@ -49,8 +53,15 @@ public class SmoothCameraLook : MonoBehaviour
 		var targetOrientation = Quaternion.Euler(targetDirection);
 		var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
 
-		// Get raw mouse input for a cleaner reading on more sensitive mice.
-		var mouseDelta = new Vector2(Input.GetAxis(lookHorizontalAxis), -Input.GetAxis(lookVerticalAxis));
+		var mouseDelta = new Vector2();
+
+		//Check if we're using Mouse input
+		if (playerNumber == 0)
+			// Get raw mouse input for a cleaner reading on more sensitive mice.
+			mouseDelta = new Vector2 (Input.GetAxis (lookHorizontalAxis), Input.GetAxis (lookVerticalAxis));
+		else
+			// Use inverted Y axis so controller joystick is inverted correctly.
+			mouseDelta = new Vector2 (Input.GetAxis (lookHorizontalAxis), -Input.GetAxis (lookVerticalAxis));
 
 		// Scale input against the sensitivity setting and multiply that against the smoothing value.
 		mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
