@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    public int index;
 
     public void Reset()
     {

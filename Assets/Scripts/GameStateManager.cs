@@ -19,12 +19,18 @@ public class GameStateManager : MonoBehaviour {
 
         if (joysticks == 0)
         {
-            players.Add(Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject);
+            GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
+            go.name = "Player 1";
+            go.GetComponent<PlayerControl>().index = 1;
+            players.Add(go);
         } else
         {
-            for (int i = 0; i < joysticks; i++)
+            for (int i = 1; i <= joysticks; i++)
             {
-                players.Add(Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject);
+                GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
+                go.name = "Player " + i;
+                go.GetComponent<PlayerControl>().index = i;
+                players.Add(go);
             }
         }
 

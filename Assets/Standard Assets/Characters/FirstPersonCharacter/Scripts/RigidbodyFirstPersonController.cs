@@ -8,6 +8,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (CapsuleCollider))]
     public class RigidbodyFirstPersonController : MonoBehaviour
     {
+        public String jumpButton;
+        public String axisHorizontal;
+        public String axisVertical;
+
+
         [Serializable]
         public class MovementSettings
         {
@@ -124,7 +129,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
         }
-
 
         private void Update()
         {
