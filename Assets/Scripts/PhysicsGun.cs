@@ -24,8 +24,14 @@ public class PhysicsGun : MonoBehaviour
 		cam = GetComponent<Camera> ();
 		var textObj = GameObject.Find ("Charge");
 		chargeText = textObj.GetComponent<Text> ();
-		pushAxis = "FireP" + transform.parent.GetComponent<PlayerControl> ().index;
-		pushAxis = "AltFireP" + transform.parent.GetComponent<PlayerControl> ().index;
+
+		if (GameStateManager.joysticksCount != 0) {
+			pushAxis = "FireP" + transform.parent.GetComponent<PlayerControl> ().index;
+			pullAxis = "AltFireP" + transform.parent.GetComponent<PlayerControl> ().index;
+		} else {
+			pushAxis = "FireP0";
+			pullAxis = "AltFireP0";
+		}
 	}
 
 	void Update ()
@@ -35,10 +41,14 @@ public class PhysicsGun : MonoBehaviour
 			power += 5;
 			range += 5;
 		}
-		if (Input.GetAxis(pushAxis) < .5f) {
+			
+		if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pushAxis) < .5f) {
+			charging = true;
+		} else if (Input.GetButtonDown (pushAxis)) {
 			charging = true;
 		}
-		if (charging && Input.GetAxis(pushAxis) == 0) {
+			
+		if (charging && (Input.GetAxis(pushAxis) == 0 || Input.GetButtonUp(pushAxis))) {
 			Collider[] hitColliders = Physics.OverlapSphere (transform.position, Mathf.Min (range, 10));
 			foreach (Collider c in hitColliders) {
 				Rigidbody rb = c.GetComponent<Rigidbody> ();

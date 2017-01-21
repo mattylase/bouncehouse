@@ -8,15 +8,20 @@ public class GameStateManager : MonoBehaviour {
     PlayerControl player1, player2, player3, player4;
     List<GameObject> players;
 
+	public static int joysticksCount;
 
     // Use this for initialization
     void Start () {
         playerPrefab = Resources.Load("Prefabs/Player");
         players = new List<GameObject>();
 
-        int joysticks = Input.GetJoystickNames().Length;
+		joysticksCount = 0;
 
-        if (joysticks == 0)
+		foreach (string joystickName in Input.GetJoystickNames())
+			if (joystickName != "" && joystickName != null && joystickName != "Object")
+				joysticksCount++;
+
+		if (joysticksCount == 0)
         {
             GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
             go.name = "Player 1";
@@ -24,7 +29,7 @@ public class GameStateManager : MonoBehaviour {
             players.Add(go);
         } else
         {
-            for (int i = 1; i <= joysticks; i++)
+			for (int i = 1; i <= joysticksCount; i++)
             {
                 GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
                 go.name = "Player " + i;
@@ -33,7 +38,7 @@ public class GameStateManager : MonoBehaviour {
             }
         }
 
-        AdjustViewports(joysticks);
+		AdjustViewports(joysticksCount);
         StartCoroutine(AreYouAlive());
 	}
 

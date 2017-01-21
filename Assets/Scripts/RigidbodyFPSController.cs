@@ -21,7 +21,10 @@ public class RigidbodyFPSController : MonoBehaviour
 
 	void Start()
 	{
-		playerNumber = GetComponent<PlayerControl> ().index;
+		if(GameStateManager.joysticksCount == 0)
+			playerNumber = 0;
+		else
+			playerNumber = GetComponent<PlayerControl> ().index;
 		moveHorizontalAxis = "moveHorizontalAxisP" + playerNumber;
 		moveVerticalAxis = "moveVerticalAxisP" + playerNumber;
 		jumpButton = "JumpP" + playerNumber;
@@ -36,7 +39,11 @@ public class RigidbodyFPSController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		Vector3 targetVelocity = new Vector3 (Input.GetAxis (moveHorizontalAxis), 0, -Input.GetAxis (moveVerticalAxis));
+		Vector3 targetVelocity = new Vector3 ();
+		if (playerNumber == 0)
+			targetVelocity = new Vector3 (Input.GetAxis (moveHorizontalAxis), 0, Input.GetAxis (moveVerticalAxis));
+		else
+			targetVelocity = new Vector3 (Input.GetAxis (moveHorizontalAxis), 0, -Input.GetAxis (moveVerticalAxis));
 		targetVelocity = transform.TransformDirection (targetVelocity);
 		targetVelocity *= speed;
 
