@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-// Very simple smooth mouselook modifier for the MainCamera in Unity
+// Very simple smooth mouselook modifier for the Maincam in Unity
 // by Francis R. Griffiths-Keam - www.runningdimensions.com
 
-[AddComponentMenu("Camera/Simple Smooth Mouse Look ")]
+[AddComponentMenu("camera/Simple Smooth Mouse Look ")]
 public class SmoothCameraLook : MonoBehaviour
 {
 	Vector2 _mouseAbsolute;
@@ -17,12 +17,12 @@ public class SmoothCameraLook : MonoBehaviour
 	public Vector2 targetCharacterDirection;
 
 	// Assign this if there's a parent object controlling motion, such as a Character Controller.
-	// Yaw rotation will affect this object instead of the camera if set.
+	// Yaw rotation will affect this object instead of the cam if set.
 	public GameObject characterBody;
 
 	void Start()
 	{
-		// Set target direction to the camera's initial orientation.
+		// Set target direction to the cam's initial orientation.
 		targetDirection = transform.localRotation.eulerAngles;
 
 		// Set target direction for the character body to its inital state.
@@ -64,7 +64,7 @@ public class SmoothCameraLook : MonoBehaviour
 
 		transform.localRotation *= targetOrientation;
 
-		// If there's a character body that acts as a parent to the camera
+		// If there's a character body that acts as a parent to the cam
 		if (characterBody)
 		{
 			var yRotation = Quaternion.AngleAxis(_mouseAbsolute.x, characterBody.transform.up);

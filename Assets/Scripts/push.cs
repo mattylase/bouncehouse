@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class push : MonoBehaviour
 {
-	public float range;
-	public float power;
+	public float maxPower = 200.0f;
+	private float range;
+	private float power;
 	bool charging;
 	Text chargeText;
 	Camera cam;
@@ -26,7 +27,7 @@ public class push : MonoBehaviour
 	void Update ()
 	{
 		chargeText.text = power.ToString ();
-		if (charging && power < 200) {
+		if (charging && power < maxPower) {
 			power += 5;
 			range += 5;
 		}
