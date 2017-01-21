@@ -78,7 +78,12 @@ public class GameStateManager : MonoBehaviour {
             {
                 if (Vector3.Distance(transform.position, player.transform.position) > 75)
                 {
-                    player.GetComponent<PlayerControl>().Reset();
+                    //player.GetComponent<PlayerControl>().Reset();
+					var playerRigidBody = player.GetComponent<Rigidbody>();
+					playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+					var camera = player.GetComponentInChildren<Camera>();
+					camera.clearFlags = CameraClearFlags.SolidColor;
+					camera.backgroundColor = Color.red;
                 }
                 yield return null;
             }
