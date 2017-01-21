@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class RigidbodyFPSController : MonoBehaviour
 {
+	public int playerNumber;
+
+	public string moveHorizontalAxis;
+	public string moveVerticalAxis;
+	public string jumpButton;
 
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
@@ -14,6 +19,14 @@ public class RigidbodyFPSController : MonoBehaviour
 	private Rigidbody rb;
 
 
+	void Start()
+	{
+		playerNumber = GetComponent<PlayerControl> ().index;
+		moveHorizontalAxis = "moveHorizontalAxisP" + playerNumber;
+		moveVerticalAxis = "moveVerticalAxisP" + playerNumber;
+		jumpButton = "JumpP" + playerNumber;
+	}
+
 	void Awake ()
 	{
 		rb = GetComponent<Rigidbody> ();
@@ -23,7 +36,7 @@ public class RigidbodyFPSController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		Vector3 targetVelocity = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
+		Vector3 targetVelocity = new Vector3 (Input.GetAxis (moveHorizontalAxis), 0, -Input.GetAxis (moveVerticalAxis));
 		targetVelocity = transform.TransformDirection (targetVelocity);
 		targetVelocity *= speed;
 
@@ -34,7 +47,7 @@ public class RigidbodyFPSController : MonoBehaviour
 		velocityChange.y = 0;
 		rb.AddForce (velocityChange, ForceMode.VelocityChange);
 		if (grounded) {
-			if (canJump && Input.GetButton ("Jump")) {
+			if (canJump && Input.GetButton (jumpButton)) {
 				rb.velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
 			}
 		}

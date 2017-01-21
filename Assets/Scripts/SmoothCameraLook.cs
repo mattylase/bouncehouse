@@ -16,6 +16,11 @@ public class SmoothCameraLook : MonoBehaviour
 	public Vector2 targetDirection;
 	public Vector2 targetCharacterDirection;
 
+	public int playerNumber;
+
+	public string lookHorizontalAxis;
+	public string lookVerticalAxis;
+
 	// Assign this if there's a parent object controlling motion, such as a Character Controller.
 	// Yaw rotation will affect this object instead of the cam if set.
 	public GameObject characterBody;
@@ -28,6 +33,11 @@ public class SmoothCameraLook : MonoBehaviour
 
 		// Set target direction for the character body to its inital state.
 		if (characterBody) targetCharacterDirection = characterBody.transform.localRotation.eulerAngles;
+
+		playerNumber = transform.parent.GetComponent<PlayerControl> ().index;
+
+		lookHorizontalAxis = "lookHorizontalAxisP" + playerNumber;
+		lookVerticalAxis = "lookVerticalAxisP" + playerNumber;
 	}
 
 	void Update()
@@ -40,7 +50,7 @@ public class SmoothCameraLook : MonoBehaviour
 		var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
 
 		// Get raw mouse input for a cleaner reading on more sensitive mice.
-		var mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+		var mouseDelta = new Vector2(Input.GetAxis(lookHorizontalAxis), -Input.GetAxis(lookVerticalAxis));
 
 		// Scale input against the sensitivity setting and multiply that against the smoothing value.
 		mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
