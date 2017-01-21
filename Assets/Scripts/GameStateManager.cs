@@ -4,41 +4,31 @@ using UnityEngine;
 
 public class GameStateManager : MonoBehaviour {
 
+    private Object playerPrefab;
     PlayerControl player1, player2, player3, player4;
-    List<PlayerControl> players;
+    List<GameObject> players;
 
 
     // Use this for initialization
     void Start () {
-        player1 = GameObject.Find("Player 1").GetComponent<PlayerControl>();
-        player2 = GameObject.Find("Player 2").GetComponent<PlayerControl>();
-        player3 = GameObject.Find("Player 3").GetComponent<PlayerControl>();
-        player4 = GameObject.Find("Player 4").GetComponent<PlayerControl>();
-        players = new List<PlayerControl>();
+        playerPrefab = Resources.Load("Prefabs/Player");
+        players = new List<GameObject>();
 
-        if (player1 != null)
+        int joysticks = Input.GetJoystickNames().Length;
+        Debug.Log(joysticks);
+
+        if (joysticks == 0)
         {
-            players.Add(player1);
-            player1.gameObject.SetActive(true);
-        }
-        if (player2 != null)
+            players.Add(Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject);
+        } else
         {
-            players.Add(player2);
-            player2.gameObject.SetActive(true);
-        }
-        if (player3 != null)
-        {
-            players.Add(player3);
-            player3.gameObject.SetActive(true);
-        }
-        if (player4 != null)
-        {
-            players.Add(player4);
-            player4.gameObject.SetActive(true);
+            for (int i = 0; i < joysticks; i++)
+            {
+                players.Add(Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject);
+            }
         }
 
-        AdjustViewports(Input.GetJoystickNames().Length);
-
+        AdjustViewports(joysticks);
         StartCoroutine(AreYouAlive());
 	}
 
@@ -48,22 +38,22 @@ public class GameStateManager : MonoBehaviour {
         {
             case 0:
             case 1:
-                player1.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 1, 1);
+                players[0].GetComponentInChildren<Camera>().rect = new Rect(0, 0, 1, 1);
                 break;
             case 2:
-                player1.GetComponentInChildren<Camera>().rect = new Rect(0, .5f, 1, .5f);
-                player2.GetComponentInChildren<Camera>().rect = new Rect(0, 0f, 1, .5f);
+                players[0].GetComponentInChildren<Camera>().rect = new Rect(0, .5f, 1, .5f);
+                players[1].GetComponentInChildren<Camera>().rect = new Rect(0, 0f, 1, .5f);
                 break;
             case 3:
-                player1.GetComponentInChildren<Camera>().rect = new Rect(0, .5f, 1, .5f);
-                player2.GetComponentInChildren<Camera>().rect = new Rect(0, 0f, .5f, .5f);
-                player3.GetComponentInChildren<Camera>().rect = new Rect(.5f, 0f, .5f, .5f);
+                players[0].GetComponentInChildren<Camera>().rect = new Rect(0, .5f, 1, .5f);
+                players[1].GetComponentInChildren<Camera>().rect = new Rect(0, 0f, .5f, .5f);
+                players[2].GetComponentInChildren<Camera>().rect = new Rect(.5f, 0f, .5f, .5f);
                 break;
             case 4:
-                player1.GetComponentInChildren<Camera>().rect = new Rect(0, .5f, .5f, .5f);
-                player2.GetComponentInChildren<Camera>().rect = new Rect(.5f, .5f, .5f, .5f);
-                player3.GetComponentInChildren<Camera>().rect = new Rect(0f, 0f, .5f, .5f);
-                player4.GetComponentInChildren<Camera>().rect = new Rect(.5f, 0f, .5f, .5f);
+                players[0].GetComponentInChildren<Camera>().rect = new Rect(0, .5f, .5f, .5f);
+                players[1].GetComponentInChildren<Camera>().rect = new Rect(.5f, .5f, .5f, .5f);
+                players[2].GetComponentInChildren<Camera>().rect = new Rect(0f, 0f, .5f, .5f);
+                players[3].GetComponentInChildren<Camera>().rect = new Rect(.5f, 0f, .5f, .5f);
                 break;
         }
     }
@@ -72,11 +62,11 @@ public class GameStateManager : MonoBehaviour {
     {
         while(true)
         {
-            foreach (PlayerControl player in players)
+            foreach (GameObject player in players)
             {
                 if (Vector3.Distance(transform.position, player.transform.position) > 75)
                 {
-                    player.Reset();
+                    player.GetComponent<PlayerControl>().Reset();
                 }
                 yield return null;
             }
