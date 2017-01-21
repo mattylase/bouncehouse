@@ -38,7 +38,6 @@ public class SmoothCameraLook : MonoBehaviour
 
 		lookHorizontalAxis = "lookHorizontalAxisP" + playerNumber;
 		lookVerticalAxis = "lookVerticalAxisP" + playerNumber;
-		Debug.Log ("this ran");
 	}
 
 	void Update()
@@ -51,8 +50,6 @@ public class SmoothCameraLook : MonoBehaviour
 		var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
 
 		// Get raw mouse input for a cleaner reading on more sensitive mice.
-		Debug.Log(lookHorizontalAxis);
-		Debug.Log(lookVerticalAxis);
 		var mouseDelta = new Vector2(Input.GetAxis(lookHorizontalAxis), -Input.GetAxis(lookVerticalAxis));
 
 		// Scale input against the sensitivity setting and multiply that against the smoothing value.

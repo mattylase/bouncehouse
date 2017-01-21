@@ -15,6 +15,7 @@ public class PhysicsGun : MonoBehaviour
 	private Transform shape;
 
 	string pushAxis;
+	string pullAxis;
 
 	void Start ()
 	{
@@ -24,6 +25,7 @@ public class PhysicsGun : MonoBehaviour
 		var textObj = GameObject.Find ("Charge");
 		chargeText = textObj.GetComponent<Text> ();
 		pushAxis = "FireP" + transform.parent.GetComponent<PlayerControl> ().index;
+		pushAxis = "AltFireP" + transform.parent.GetComponent<PlayerControl> ().index;
 	}
 
 	void Update ()

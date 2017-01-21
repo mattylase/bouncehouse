@@ -8,8 +8,7 @@ public class RigidbodyFPSController : MonoBehaviour
 
 	public string moveHorizontalAxis;
 	public string moveVerticalAxis;
-	public string lookHorizontalAxis;
-	public string lookVerticalAxis;
+	public string jumpButton;
 
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
@@ -25,7 +24,7 @@ public class RigidbodyFPSController : MonoBehaviour
 		playerNumber = GetComponent<PlayerControl> ().index;
 		moveHorizontalAxis = "moveHorizontalAxisP" + playerNumber;
 		moveVerticalAxis = "moveVerticalAxisP" + playerNumber;
-
+		jumpButton = "JumpP" + playerNumber;
 	}
 
 	void Awake ()
@@ -48,7 +47,7 @@ public class RigidbodyFPSController : MonoBehaviour
 		velocityChange.y = 0;
 		rb.AddForce (velocityChange, ForceMode.VelocityChange);
 		if (grounded) {
-			if (canJump && Input.GetButton ("Jump")) {
+			if (canJump && Input.GetButton (jumpButton)) {
 				rb.velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
 			}
 		}
