@@ -24,14 +24,11 @@ public class TerrainGenerator : MonoBehaviour {
                 GameObject go = Instantiate(groundUnit) as GameObject;
                 float width = go.GetComponent<Renderer>().bounds.extents.x * 2;
                 float height = go.GetComponent<Renderer>().bounds.extents.y * 2;
+                go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Mathf.Cos(i), .5f, Mathf.Sin(j)));
                 go.transform.position = new Vector3(width * i,  0, height * j);
                 go.transform.parent = parent.transform;
             }
         }
     }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
