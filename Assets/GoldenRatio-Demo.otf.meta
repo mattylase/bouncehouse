@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 13bcf3d9e84c4da4c8da4385d5d610e4
+timeCreated: 1485038739
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Golden Ratio Demo
+  fontNames:
+  - Golden Ratio Demo
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
