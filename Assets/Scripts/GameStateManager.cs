@@ -15,7 +15,6 @@ public class GameStateManager : MonoBehaviour {
         players = new List<GameObject>();
 
         int joysticks = Input.GetJoystickNames().Length;
-        Debug.Log(joysticks);
 
         if (joysticks == 0)
         {
