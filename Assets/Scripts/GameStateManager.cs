@@ -26,6 +26,7 @@ public class GameStateManager : MonoBehaviour {
         {
             GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
             go.name = "Player 1";
+            go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
             go.GetComponent<PlayerControl>().index = 1;
             players.Add(go);
         } else
@@ -34,6 +35,7 @@ public class GameStateManager : MonoBehaviour {
             {
                 GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
                 go.name = "Player " + i;
+                go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
                 go.GetComponent<PlayerControl>().index = i;
 				go.GetComponent<PlayerControl>().isAlive = true;
                 players.Add(go);
