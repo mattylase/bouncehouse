@@ -7,9 +7,9 @@ public class PhysicsGun2 : MonoBehaviour {
 
 	public GameObject bubbleGun;
 	public GameObject waveBlast;
-	public float maxDistance = 50;
-	public float maxPower = 10;
-	public int chargeFrames = 30;
+	public float maxDistance = 75;
+	public float maxPower = 20;
+	public int chargeFrames = 60;
 	private int charging = 0;
 	private Camera cam;
 	private float power = 0f;
@@ -21,12 +21,20 @@ public class PhysicsGun2 : MonoBehaviour {
 	private string pushAxis;
 	private string pullAxis;
 	private Color col;
+	public ParticleSystem chargeEffect;
+	public GameObject chargeShot;
 
 	void Start ()
 	{
+		chargeShot = transform.FindChild ("ChargeBall").gameObject;
+		chargeEffect = transform.GetComponentInChildren<ParticleSystem> ();
+		var em = chargeEffect.emission;
 		bubbleGun = transform.FindChild ("BubbleBlaster").gameObject;
 		cam = GetComponent<Camera> ();
 		col = GetComponentInChildren<Light> ().color;
+		chargeEffect.startColor = col;
+		em.rate = 0;
+		chargeShot.GetComponent<Renderer>().material.SetColor("_EmissionColor", col);
 		if (GameStateManager.joysticksCount != 0) {
 			pushAxis = "FireP" + transform.parent.GetComponent<PlayerControl> ().index;
 			pullAxis = "AltFireP" + transform.parent.GetComponent<PlayerControl> ().index;
@@ -39,6 +47,8 @@ public class PhysicsGun2 : MonoBehaviour {
 	void Update ()
 	{
 		//DebugVision ();
+		var em = chargeEffect.emission;
+		em.rate = 0;
 		if (charging == 0) {
 			if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pushAxis) < -.5f) {
 				charging = 1;
@@ -50,8 +60,13 @@ public class PhysicsGun2 : MonoBehaviour {
 				charging = -1;
 			}
 		} else if(Mathf.Abs (power) < maxPower){
+			float scale = 0.3f * (power / maxPower);
+			chargeEffect.startSpeed = -10 * power/maxPower;
 			power += charging * maxPower / chargeFrames;
 			distance += maxDistance / chargeFrames;
+			em.rate = power * 10;
+			if(charging > 0)
+			chargeShot.transform.localScale = new Vector3 (scale, scale, scale);
 		}
 		if (((Input.GetAxis (pushAxis) == 0 || Input.GetButtonUp (pushAxis)) && charging > 0) || ((Input.GetAxis (pullAxis) == 0 || Input.GetButtonUp (pullAxis)) && charging < 0)) {
 			shooting = true;
@@ -70,6 +85,7 @@ public class PhysicsGun2 : MonoBehaviour {
 	}
 
 	void VisionCheck(){
+		chargeShot.transform.localScale = new Vector3 (0, 0, 0);
 		if (dir > 0) {
 			List<Rigidbody> bodies = new List<Rigidbody> ();
 			foreach (float y in rayGridY) {
@@ -105,7 +121,7 @@ public class PhysicsGun2 : MonoBehaviour {
 		} else {
 			Ray ray = cam.ViewportPointToRay (new Vector3 (.5f, .5f, 0));
 			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit, distance*distance)) {
+			if (Physics.Raycast (ray, out hit, distance * 2)) {
 				GameObject wave = Instantiate (waveBlast) as GameObject;
 				wave.transform.parent = transform;
 				LineRenderer lr = wave.GetComponent<LineRenderer> ();
