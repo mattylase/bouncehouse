@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayerObject;
 
 public class GameStateManager : MonoBehaviour {
 
@@ -34,6 +35,7 @@ public class GameStateManager : MonoBehaviour {
                 GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
                 go.name = "Player " + i;
                 go.GetComponent<PlayerControl>().index = i;
+				go.GetComponent<PlayerControl>().isAlive = true;
                 players.Add(go);
             }
         }
@@ -70,6 +72,7 @@ public class GameStateManager : MonoBehaviour {
 
     IEnumerator AreYouAlive()
     {
+		int loserIndex = 0;
         while(true)
         {
             foreach (GameObject player in players)
@@ -77,16 +80,18 @@ public class GameStateManager : MonoBehaviour {
                 if (Vector3.Distance(transform.position, player.transform.position) > 75)
                 {
                     //player.GetComponent<PlayerControl>().Reset();
-					var playerRigidBody = player.GetComponent<Rigidbody>();
-					playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
-					var camera = player.GetComponentInChildren<Camera>();
-					camera.clearFlags = CameraClearFlags.SolidColor;
-					camera.backgroundColor = Color.red;
+					player.GetComponent<PlayerControl>().IsLoser();
                 }
                 yield return null;
             }
+			if (loserIndex == players.Count - 1 && players.Count > 1) {
+				foreach (GameObject player in players) {
+					if (player.GetComponent<PlayerControl>().isAlive = true) {
+						player.GetComponent<PlayerControl>().IsWinner();
+					};
+				}
+			}
             yield return new WaitForSeconds(1);
         }
     }
-
 }
