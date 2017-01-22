@@ -14,7 +14,9 @@ public class BlasterShot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (trigger001)){
+		if (Input.GetKeyUp (trigger001)){
+
+
 			myAnimator.SetTrigger ("TriggerFire");
 
 		}
