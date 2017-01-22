@@ -15,12 +15,8 @@ public class GameStateManager : MonoBehaviour {
     private Object playerPrefab;
     PlayerControl player1, player2, player3, player4;
     List<GameObject> players;
-<<<<<<< HEAD
 	private static int playerStartingLives = 3;
-=======
 	private Color[] colors = {Color.blue, Color.red, Color.green, Color.magenta};
-
->>>>>>> master
 	public static int joysticksCount;
 
     // Use this for initialization
@@ -45,12 +41,7 @@ public class GameStateManager : MonoBehaviour {
 
         if (joysticksCount == 0)
         {
-<<<<<<< HEAD
-            GameObject go = Instantiate(playerPrefab, startingLocations[0], Quaternion.identity) as GameObject;
-			Color color = new Color (Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x);
-=======
-            GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
->>>>>>> master
+			GameObject go = Instantiate(playerPrefab, startingLocations[0], Quaternion.identity) as GameObject;
             go.name = "Player 1";
             go.GetComponent<Renderer>().material.SetColor("_Color", colors[0]);
 			go.GetComponentInChildren<Light>().color = colors[0];
