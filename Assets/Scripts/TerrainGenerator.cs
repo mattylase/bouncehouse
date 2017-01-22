@@ -11,10 +11,9 @@ public class TerrainGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         groundUnit = Resources.Load("Prefabs/Cube");
-        GenerateGrid(terrainWidth, terrainLength);
 	}
 	
-    void GenerateGrid(int sizeX, int sizeZ)
+    public void GenerateGrid(int sizeX, int sizeZ)
     {
         GameObject parent = new GameObject("Terrain Parent");
         for (int i = 0; i < sizeX; i++)
