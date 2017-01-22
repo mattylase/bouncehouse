@@ -1,13 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameStateManager : MonoBehaviour {
-
+	
+	private static readonly Vector3[] startingLocations = new Vector3[] 
+	{
+		new Vector3(MapGenerator.Size.x / 2, 10, MapGenerator.Size.y / 2),
+		new Vector3(MapGenerator.Size.x / 2, 10, MapGenerator.Size.y / 2 * -1),
+		new Vector3(MapGenerator.Size.x / 2 * -1, 10, MapGenerator.Size.y / 2),
+		new Vector3(MapGenerator.Size.x / 2 * -1, 10, MapGenerator.Size.y / 2 * -1)
+	};
     private Object playerPrefab;
     PlayerControl player1, player2, player3, player4;
     List<GameObject> players;
-
+	private static int playerStartingLives = 3;
+	private Color[] colors = {Color.blue, Color.red, Color.green, Color.magenta};
 	public static int joysticksCount;
 
     // Use this for initialization
@@ -27,29 +37,31 @@ public class GameStateManager : MonoBehaviour {
         joysticksCount = 0;
 
         foreach (string joystickName in Input.GetJoystickNames())
-            if (joystickName != "" && joystickName != null && joystickName != "Object")
-                joysticksCount++;
+           if (joystickName != "" && joystickName != null && joystickName != "Object")
+			joysticksCount++;
 
         if (joysticksCount == 0)
         {
-            GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
-			Color color = new Color (Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x);
+			GameObject go = Instantiate(playerPrefab, startingLocations[0], Quaternion.identity) as GameObject;
             go.name = "Player 1";
-            go.GetComponent<Renderer>().material.SetColor("_Color", color);
-			go.GetComponentInChildren<Light>().color = color;
+            go.GetComponent<Renderer>().material.SetColor("_Color", colors[0]);
+			go.GetComponentInChildren<Light>().color = colors[0];
             go.GetComponent<PlayerControl>().index = 1;
 			go.GetComponent<PlayerControl> ().isAlive = true;
+			go.GetComponent<PlayerControl> ().lives = playerStartingLives;
             players.Add(go);
         }
         else
         {
             for (int i = 1; i <= joysticksCount; i++)
             {
-                GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
+				GameObject go = Instantiate(playerPrefab, startingLocations[i-1], Quaternion.identity) as GameObject;
                 go.name = "Player " + i;
-                go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
+				go.GetComponent<Renderer>().material.SetColor("_Color", colors[i-1]);
+				go.GetComponentInChildren<Light>().color = colors[i-1];
                 go.GetComponent<PlayerControl>().index = i;
 				go.GetComponent<PlayerControl>().isAlive = true;
+				go.GetComponent<PlayerControl> ().lives = playerStartingLives;
                 players.Add(go);
             }
         }
@@ -86,23 +98,38 @@ public class GameStateManager : MonoBehaviour {
 
     IEnumerator AreYouAlive()
     {
-		int loserIndex = 0;
         while(true)
         {
             foreach (GameObject player in players)
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > 75)
+				var p = player.GetComponent<PlayerControl>();
+                if (player.transform.position.y < -40)
                 {
-                    //player.GetComponent<PlayerControl>().Reset();
-					player.GetComponent<PlayerControl>().IsLoser();
-					loserIndex++;
-                }
+					if (p.lives > 0) 
+					{
+						p.lives--;
+					}
+
+					if (p.lives > 0) 
+					{
+						p.Reset();
+					}
+
+					if (p.lives == 0) {
+						p.IsLoser();
+					}
+				}
                 yield return null;
             }
-			if (players.Count - loserIndex == 1 && players.Count > 1) {
+			var remainingPlayers = players.Where (x => x.GetComponent<PlayerControl>().isAlive == true).Count();
+			if ( remainingPlayers == 1 && players.Count > 1) 
+			{
 				foreach (GameObject player in players) {
-					if (player.GetComponent<PlayerControl>().isAlive == true) {
+					if (player.GetComponent<PlayerControl>().isAlive == true) 
+					{
 						player.GetComponent<PlayerControl>().IsWinner();
+						yield return new WaitForSeconds(5);
+						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 					};
 				}
 			}

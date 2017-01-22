@@ -6,10 +6,12 @@ public class PlayerControl : MonoBehaviour {
 
     public int index;
 	public bool isAlive;
-    public void Reset()
+	public int lives;
+
+	public void Reset()
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        transform.position = new Vector3(2, 10, 2);
+        transform.position = new Vector3(2, 100, 2);
     }
 
 	public void IsLoser()
