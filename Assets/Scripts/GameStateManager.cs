@@ -38,6 +38,7 @@ public class GameStateManager : MonoBehaviour {
             go.GetComponent<Renderer>().material.SetColor("_Color", color);
 			go.GetComponentInChildren<Light>().color = color;
             go.GetComponent<PlayerControl>().index = 1;
+			go.GetComponent<PlayerControl> ().isAlive = true;
             players.Add(go);
         }
         else
@@ -48,6 +49,7 @@ public class GameStateManager : MonoBehaviour {
                 go.name = "Player " + i;
                 go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
                 go.GetComponent<PlayerControl>().index = i;
+				go.GetComponent<PlayerControl>().isAlive = true;
                 players.Add(go);
             }
         }
@@ -84,6 +86,7 @@ public class GameStateManager : MonoBehaviour {
 
     IEnumerator AreYouAlive()
     {
+		int loserIndex = 0;
         while(true)
         {
             foreach (GameObject player in players)
@@ -91,16 +94,19 @@ public class GameStateManager : MonoBehaviour {
                 if (Vector3.Distance(transform.position, player.transform.position) > 75)
                 {
                     //player.GetComponent<PlayerControl>().Reset();
-					var playerRigidBody = player.GetComponent<Rigidbody>();
-					playerRigidBody.constraints = RigidbodyConstraints.FreezeAll;
-					var camera = player.GetComponentInChildren<Camera>();
-					camera.clearFlags = CameraClearFlags.SolidColor;
-					camera.backgroundColor = Color.red;
+					player.GetComponent<PlayerControl>().IsLoser();
+					loserIndex++;
                 }
                 yield return null;
             }
+			if (players.Count - loserIndex == 1 && players.Count > 1) {
+				foreach (GameObject player in players) {
+					if (player.GetComponent<PlayerControl>().isAlive == true) {
+						player.GetComponent<PlayerControl>().IsWinner();
+					};
+				}
+			}
             yield return new WaitForSeconds(1);
         }
     }
-
 }
