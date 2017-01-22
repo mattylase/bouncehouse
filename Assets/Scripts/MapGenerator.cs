@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour
 {
 	public Object groundUnit;
-	public Vector2 Size = new Vector2 (20, 20);
+	public static Vector2 Size = new Vector2 (20, 20);
 	public float Height = 10.0f;
 	public float NoiseSize = 10.0f;
 
