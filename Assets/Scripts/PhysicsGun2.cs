@@ -40,11 +40,11 @@ public class PhysicsGun2 : MonoBehaviour {
 	{
 		//DebugVision ();
 		if (charging == 0) {
-			if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pushAxis) < .5f) {
+			if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pushAxis) < -.5f) {
 				charging = 1;
 			} else if (Input.GetButtonDown (pushAxis)) {
 				charging = 1;
-			} else if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pullAxis) > -.5f) {
+			} else if (GameStateManager.joysticksCount != 0 && Input.GetAxis (pullAxis) > .5f) {
 				charging = -1;
 			} else if (Input.GetButtonDown (pullAxis)) {
 				charging = -1;
