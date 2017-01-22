@@ -20,12 +20,10 @@ public class MapGenerator : MonoBehaviour
 	public float PerlinNoise (float x, float y)
 	{
 		float noise = Mathf.PerlinNoise (x / NoiseSize, y / NoiseSize);
-
 		return noise * Height;
-
 	}
 
-	void Generate ()
+	public void Generate ()
 	{
 		Destroy (GameObject.Find ("Terrain"));
 		root = new GameObject ("Terrain");

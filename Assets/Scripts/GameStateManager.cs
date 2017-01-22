@@ -14,23 +14,28 @@ public class GameStateManager : MonoBehaviour {
     void Start () {
         playerPrefab = Resources.Load("Prefabs/Player");
         players = new List<GameObject>();
+        GetComponent<MapGenerator>().Generate();
+    }
 
-		joysticksCount = 0;
+    private void LoadPlayers()
+    {
+        joysticksCount = 0;
 
-		foreach (string joystickName in Input.GetJoystickNames())
-			if (joystickName != "" && joystickName != null && joystickName != "Object")
-				joysticksCount++;
+        foreach (string joystickName in Input.GetJoystickNames())
+            if (joystickName != "" && joystickName != null && joystickName != "Object")
+                joysticksCount++;
 
-		if (joysticksCount == 0)
+        if (joysticksCount == 0)
         {
             GameObject go = Instantiate(playerPrefab, new Vector3(2, 10, 2), Quaternion.identity) as GameObject;
             go.name = "Player 1";
             go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
             go.GetComponent<PlayerControl>().index = 1;
             players.Add(go);
-        } else
+        }
+        else
         {
-			for (int i = 1; i <= joysticksCount; i++)
+            for (int i = 1; i <= joysticksCount; i++)
             {
                 GameObject go = Instantiate(playerPrefab, new Vector3(2 * i, 10, 2 * i), Quaternion.identity) as GameObject;
                 go.name = "Player " + i;
@@ -40,9 +45,9 @@ public class GameStateManager : MonoBehaviour {
             }
         }
 
-		AdjustViewports(joysticksCount);
+        AdjustViewports(joysticksCount);
         StartCoroutine(AreYouAlive());
-	}
+    }
 
     void AdjustViewports(int numPlayers)
     {

@@ -4,7 +4,7 @@ timeCreated: 1485038739
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 4
-  fontSize: 16
+  fontSize: 64
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
@@ -14,7 +14,7 @@ TrueTypeFontImporter:
   - Golden Ratio Demo
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 0
+  fontRenderingMode: 1
   ascentCalculationMode: 1
   userData: 
   assetBundleName: 
