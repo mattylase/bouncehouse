@@ -27,7 +27,7 @@ public class GameStateManager : MonoBehaviour {
             go.name = "Player 1";
             go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
             go.GetComponent<PlayerControl>().index = 1;
-			go.GetComponent<PlayerControl> ().index = true;
+			go.GetComponent<PlayerControl> ().isAlive = true;
             players.Add(go);
         } else
         {
