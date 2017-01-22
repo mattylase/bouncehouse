@@ -102,10 +102,8 @@ public class GameStateManager : MonoBehaviour {
             foreach (GameObject player in players)
             {
 				var p = player.GetComponent<PlayerControl>();
-
-				if (player.transform.position.y < -75)
+                if (player.transform.position.y < -75)
                 {
-					
 					if (p.lives > 0) 
 					{
 						p.lives--;
