@@ -27,6 +27,7 @@ public class GameStateManager : MonoBehaviour {
             go.name = "Player 1";
             go.GetComponent<Renderer>().material.SetColor("_Color", new Color(Random.insideUnitCircle.x, Random.insideUnitCircle.x, Random.insideUnitCircle.x));
             go.GetComponent<PlayerControl>().index = 1;
+			go.GetComponent<PlayerControl> ().index = true;
             players.Add(go);
         } else
         {
@@ -82,12 +83,13 @@ public class GameStateManager : MonoBehaviour {
                 {
                     //player.GetComponent<PlayerControl>().Reset();
 					player.GetComponent<PlayerControl>().IsLoser();
+					loserIndex++;
                 }
                 yield return null;
             }
-			if (loserIndex == players.Count - 1 && players.Count > 1) {
+			if (players.Count - loserIndex == 1 && players.Count > 1) {
 				foreach (GameObject player in players) {
-					if (player.GetComponent<PlayerControl>().isAlive = true) {
+					if (player.GetComponent<PlayerControl>().isAlive == true) {
 						player.GetComponent<PlayerControl>().IsWinner();
 					};
 				}
