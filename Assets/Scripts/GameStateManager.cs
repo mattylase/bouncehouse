@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameStateManager : MonoBehaviour {
 	
@@ -102,7 +103,7 @@ public class GameStateManager : MonoBehaviour {
             foreach (GameObject player in players)
             {
 				var p = player.GetComponent<PlayerControl>();
-                if (player.transform.position.y < -75)
+                if (player.transform.position.y < -40)
                 {
 					if (p.lives > 0) 
 					{
@@ -121,10 +122,14 @@ public class GameStateManager : MonoBehaviour {
                 yield return null;
             }
 			var remainingPlayers = players.Where (x => x.GetComponent<PlayerControl>().isAlive == true).Count();
-			if ( remainingPlayers == 1 && players.Count > 1) {
+			if ( remainingPlayers == 1 && players.Count > 1) 
+			{
 				foreach (GameObject player in players) {
-					if (player.GetComponent<PlayerControl>().isAlive == true) {
+					if (player.GetComponent<PlayerControl>().isAlive == true) 
+					{
 						player.GetComponent<PlayerControl>().IsWinner();
+						yield return new WaitForSeconds(5);
+						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 					};
 				}
 			}
