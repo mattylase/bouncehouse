@@ -17,6 +17,11 @@ public class GameStateManager : MonoBehaviour {
         GetComponent<MapGenerator>().Generate();
     }
 
+    public void NotifyReady()
+    {
+        LoadPlayers();
+    }
+
     private void LoadPlayers()
     {
         joysticksCount = 0;
