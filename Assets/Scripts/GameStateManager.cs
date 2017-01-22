@@ -92,7 +92,7 @@ public class GameStateManager : MonoBehaviour {
         {
             foreach (GameObject player in players)
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > 75)
+                if (player.transform.position.y < -75)
                 {
                     //player.GetComponent<PlayerControl>().Reset();
 					player.GetComponent<PlayerControl>().IsLoser();
